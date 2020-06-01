@@ -1,0 +1,17 @@
+\section{HTCondor and HTC-Python Bindings}
+    \href{http://pages.cs.wisc.edu/~adesmet/status.html}{Status and State Numbers}\\
+    \href{https://research.cs.wisc.edu/htcondor/HTCondorWeek2016/presentations/Bockelman_Python-tutorial.pdf}{HTCondor-Python Presentation}\\
+    \href{https://research.cs.wisc.edu/htcondor/manual/v8.6/condor_q.html}{Condor\_q Command Documentation}\\
+    \href{https://research.cs.wisc.edu/htcondor/mail-lists/}{HTCondor Mailing Lists}\\
+    \href{https://htcondor.readthedocs.io/en/latest/apis/python-bindings/index.html}{Python Bindings}\\
+    
+    Even with the above references, some details remained unclear. Here is a useful mapping from python binding commands to condor\_q outputs:\\
+    \newline
+    \textbf{job.get("ClusterID")} - we have called this different names, but is in the sql db as osg\_ID\\
+    \textbf{job.get("JobStatus")} - returns if job is running /idle. See \href{http://pages.cs.wisc.edu/~adesmet/status.html}{Status and State Numbers} for more.\\
+    \textbf{job.get("QDate")} - utc unix timestamp of when the job was submitted.\\
+    \textbf{job.get("TotalSubmitProcs")} - total number of jobs submitted. To get the number of jobs done, you must subtract all running and idle jobs from the total jobs, i.e. there does not exist a variable tracking how many jobs are done in the batch submission.\\
+    
+\section{MySQL and SQLite Resources}
+    Currently trying to locate these
+    

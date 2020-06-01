@@ -1,0 +1,28 @@
+\section{PR Notes for June 1 2020 PR}
+    \subsection*{Overview}
+        \indent Replaced jsonify\_logfile.py with gemc\_json\_logging.py, increased usability between python2 and python3, created a few utility functions, developed python-htcondor bindings. 
+    
+    \subsection{Rework of jsonify\_logfile}
+        jsonify\_logfile.py - no longer needed, replaced by gemc\_json\_logging.py (perhaps we can pick a better name)\\
+        ~\\
+        \textbf{Created New File gemc\_json\_logging.py}\\
+        gemc\_json\_logging.py - uses get\_condor\_q.py (described below) to grab data directly from htcondor scheduler, and outputs gemc data which should be able to be read directly into the web interface as before.\\
+        Usage:\\
+        Testing: python3 gemc\_json\_logging.py -lite=CLAS12OCR.db -t -o testoutput.log\\
+        Standard: python3 gemc\_json\_logging.py (with no arguements, defaults will use mysql db and output to osgLog.json)\\
+         ~\\
+        \textbf{Created New Function get\_condor\_q.py}\\
+        utils/get\_condor\_q.py - querys the htcondor system and returns relevant information. Can be expanded to return things like priority, number of jobs held, etc. Should continue to add some data verification and edge case handling.\\
+        ~\\
+        \textbf{Obsolete functions in osgQuery.sh}\\
+        utils/shScripts/osgQuery.sh - no longer need to run condor\_q, script can be changed to just run gemc\_json\_logging.py once it is validated to work properly
+        
+    \subsection{Other}
+         \textbf{Created function utils/utils.unixtimeconvert(unixtimestamp, timezone)}\\
+        description: put in a utc unix time stamp and timezone (e.g. 'eastern') get out a local time e..g 5/31 12:19 PM.\\
+        ~\\
+        \textbf{Changed utils/html\_reader.py}\\
+        python2 uses html module HTMLParser and urllib2, python3 uses html.parser and urlopen\\
+        added utils/getPythonVersion() function to allow to choose which to import dynamically\\
+        ~\\
+        \textbf{Moved some hard coded variables to fs.py}

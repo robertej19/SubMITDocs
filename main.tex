@@ -1,0 +1,69 @@
+\documentclass[oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\geometry{portrait, margin=1. in}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+
+\lstset{language=Python}
+\lstset{frame=lines}
+%\lstset{caption={Insert code directly in your document}}
+%\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+ {\huge\bfseries SubMIT Off Campus Resources\\}
+ % ----------------------------------------------------------------
+ \vspace{1.5cm}
+ {\Large\bfseries Put Authors Here et. al.}\\[5pt]
+ robertej@mit.edu\\[14pt]
+  % ----------------------------------------------------------------
+ \vspace{2cm}
+
+
+% {By}\\[5pt] {\Large \sc {Me}}
+ \vfill
+ % ----------------------------------------------------------------
+
+ \vfill
+{June 2020}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+
+\chapter{Meetings}
+    \input{Meetings/Meeting-Minutes}
+    
+%This section needs work to compile correctly    
+%\chapter{Tasks}
+%    \input{Tasks/Tasks}
+    
+%This section needs work to compile correctly    
+%\chapter{Structure}
+%    \input{Structure/Structure}    
+
+\chapter{Pull Request Notes}
+    \input{Pull-Requests/prs}
+
+\chapter{Usage}
+    \input{Usage/Usage}
+    
+\chapter{Resources}
+    \input{Resources/Resources}
+    
+    
+
+\end{document}

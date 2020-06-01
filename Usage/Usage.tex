@@ -1,0 +1,50 @@
+\section{Testing with SQLite}
+    \subsection*{Create SQLite DB}
+        \begin{lstlisting}
+            python utils/create_database.py --lite=name.sql
+        \end{lstlisting}
+    
+    \subsection*{Submit job on client side to SQLite DB}
+        \begin{lstlisting}
+            python client/src/SubMit.py --lite=name.sql -u=username client/scard_type1.txt
+        \end{lstlisting}
+    
+\section{Statistics and Logging}
+    \subsection*{GEMC JSON Web Interface Statistics}
+         To test on sqlite that things work as intended: 
+         \begin{lstlisting}
+            python3 utils/gemc_json_logging.py -lite=CLAS12OCR.db -t -o testoutput.log
+        \end{lstlisting}
+        ~\\
+        \newline
+        Normal use (with no arguments, default will use mysql db and output to osgLog.json)
+        \begin{lstlisting}
+            python3 utils/gemc_json_logging.py 
+        \end{lstlisting}
+   
+   
+ %the below section needs some work to compile properly
+\iffalse     
+\section{Useful SQL Commands}
+     sqlite run to download the running script and the gcard. Assuming DB is in the same dir
+    \begin{lstlisting}
+        sqlite3 CLAS12_OCRDB.db "SELECT runscript_text FROM
+        Submissions WHERE submissionID = $submissionID"  > $nodeScript
+    \end{lstlisting}
+    
+    \begin{lstlisting}
+        mysql --host jsubmit.jlab.org --user='username' --password='password' --database='CLAS12OCR' --execute='SELECT runscript_text FROM Submissions WHERE submissionID = 1; ' > example.txt
+    \end{lstlisting}
+    
+    mysql run to download the running script and the gcard.
+    \begin{lstlisting}
+    mysql --host jsubmit.jlab.org --user='$mysql_user' --password='$mysql_pass' --database='CLAS12OCR' --execute='SELECT runscript_text FROM Submissions WHERE submissionID = $submissionID; ' > $nodeScript
+    echo Now running $nodeScript with submissionID: $submissionID" inside directory: "`pwd`
+    \end{lstlisting}
+    
+    \begin{lstlisting}
+    mysql --defaults-extra-file=msqlconf.txt --execute="SELECT runscript_text FROM Submissions WHERE submissionID = $submissionID;"  > $nodeScript
+    echo Now running $nodeScript with submissionID: $submissionID" inside directory: "`pwd`
+    \end{lstlisting}
+    
+\fi

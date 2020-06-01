@@ -1,0 +1,69 @@
+
+Need to include Held jobs in listing?
+
+Incorportate Travis-CI
+
+Top task: Python bindings: 
+
+\href{https://htcondor.readthedocs.io/en/latest/apis/python-bindings/}{htcondor python bindings}
+
+
+Automatic generation and usage of container – dependent quantities such as generator lists, configuration files
+
+How is prority defined?
+
+Automatic generation and usuage of experiment – dependent quantities such as background merging file list 
+
+
+Background merging mechanism
+
+
+Support multiple containers
+
+
+Add more control over job flow, output sturcture
+
+Set up Contintious integration
+
+
+
+If genOutput is changed to “dvcs.dat” from “dvcsgen1.dat", everything is fine
+In the new web_interface I didn’t even include all those generators for this reason. Also, soon we should have the scard object to remove those maps in the fs.py that have the hardcoded names.
+
+
+
+) Using online repositoris:
+	2.1) Create documentation to describe how to set up online repositories
+	2.2) Is there a way to store things the other computer has acress to bypass the internet, maybe on volitle? It can be a pain to upload to remote online repositories. Could we upload to 	github?
+Move connect_to_db to utils/utils
+Add sqlite option to utils/jsonify_logfile.py
+
+
+
+1) Is there a way to get information about what version of gemc / what other versions of the software are in the CVMFS image (which is distributed to all systems, Im guessing?)
+	1.1) see what gcards are avaliable?
+	1.2) Add way to specifiy specific gcard within docker containe
+
+
+
+
+How will we log the number of events / the number of jobs if the user supplies the gcards / LUND files?
+use log output files to monitor job submissions
+
+
+
+
+5.) Work on fixing -w issue -- should not have to use, also gcards should be downloaded on node
+
+
+
+2.)
+Set up a dynamic list of gcards acceptable 
+have list returned to user on what gcards are valid, can assume clas12.gcard & a description of what gcard is / does / has in it
+
+
+Regarding the gcards, I think it's ok to have them in a file for now. We can wait a few container releases to see if what's in the file matches the container content or it has to be different. 
+The command to retrieve the list from the container is straightforward:
+
+singularity exec --home ${PWD}:/srv --pwd /srv --bind /cvmfs --contain --ipc --pid /cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production ls /jlab/work/ | grep gcard
+
