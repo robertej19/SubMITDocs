@@ -1,3 +1,144 @@
+\section{MySQL Commands}
+    For all command examples, we are using the hostname of "jsubmit.jlab.org", the username of "robertej". Substitute these values for your needs. N.b. SQL has a formalism where all commands are capitalized and all items are lower cased. We will try to stick to that in all examples but note that SQL is actually case insenstitive as a language. Also, the language must end each command in a semicolon. \\
+    
+    
+    \subsection{Connecting to Database}
+        To establish an interactive session on the command line:
+        \begin{lstlisting}
+            mysql -h jsubmit.jlab.org -u robertej -p 
+        \end{lstlisting}
+        
+        If you don't want to have an interactive session, or don't want to enter a password each time, you can pass a configuration file as:
+        
+        \begin{lstlisting}
+            mysql --defaults-extra-file=msql_conn.txt     
+        \end{lstlisting}
+        
+        Where mysql\_conn.txt is a text file of the form:
+        
+        \begin{lstlisting}
+            [client]                                                                                            
+            user='robertej'                                                                                                   
+            password='realpassword'
+            host='jsubmit.jlab.org'
+            database='CLAS12OCR' 
+        \end{lstlisting}
+    
+    \subsection{Basic MySQL Commands}
+    
+        See available databases:
+        
+        \begin{lstlisting}
+            SHOW DATABASES;
+        \end{lstlisting}
+        
+        Create a databases:
+        
+        \begin{lstlisting}
+            CREATE DATABASE CLAS12OCR;
+        \end{lstlisting}
+        
+        Delete a databases:
+        
+        \begin{lstlisting}
+            DROP DATABASE CLAS12OCR;
+        \end{lstlisting}
+        
+        Enter a particular database:
+        
+        \begin{lstlisting}
+            USE CLAS12OCR;
+        \end{lstlisting}
+        
+        See available tables in a database:
+        
+        \begin{lstlisting}
+            SHOW TABLES;
+        \end{lstlisting}
+        
+        See schema of a particular table:
+        
+        \begin{lstlisting}
+            DESCRIBE CLAS12OCR.users;
+        \end{lstlisting}
+        
+        Leave the interactive MySQL environment:
+        
+        \begin{lstlisting}
+            EXIT;
+        \end{lstlisting}
+    
+    \subsection{Advanced MySQL Commands}
+    
+    How to see size of databases (copy verbatim):
+
+        \begin{lstlisting}
+            SELECT table_schema "DB Name",
+                    ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+            FROM information_schema.tables 
+            GROUP BY table_schema; 
+        \end{lstlisting}
+    
+    How to dump all information from a database into a text file:
+    
+    \begin{lstlisting}
+        mysqldump -h jsubmit.jlab.org --skip-comments --skip-extended-insert -u robertej -p CLAS12OCR > test10.sql  
+    \end{lstlisting}
+    
+    The two skip options are optional and only include information extraneous to the actual data in the database. They can be omitted without error.\\
+    
+    How to make a copy of a database to another MySQL DB:
+
+    \begin{lstlisting}
+        mysqldump -h jsubmit.jlab.org -u robertej -p CLAS12OCR | mysql -h jsubmit.jlab.org -u robertej -p CLAS12OCRBackup
+    \end{lstlisting}    
+    
+    \subsection{Common MySQL Commands in CLAS12OCR}
+    
+        Get list of all users and current running jobs:
+        
+        \begin{lstlisting}
+            SELECT user, total_running_jobs FROM users;
+        \end{lstlisting}
+        
+        More usefully, see the 10 most recent submissions on the database:
+        
+        \begin{lstlisting}
+            SELECT user, client_time, run_status FROM submissions ORDER BY user_submission_id DESC LIMIT 10;
+        \end{lstlisting}
+        
+        
+        If you want to wrap everything all up in one, you can do: 
+        \begin{lstlisting}
+        mysql --defaults-extra-file=msql_conn.txt -N -s --execute='select user, client_time, run_status from submissions ORDER BY user_submission_id DESC LIMIT 10;' 
+        \end{lstlisting}
+        
+        
+        How to copy runscript from the database to a text file:
+        \begin{lstlisting}
+        mysql --host jsubmit.jlab.org --user='username' --password='password' --database='CLAS12OCR' --execute='SELECT runscript_text FROM Submissions WHERE submissionID = 1; ' > example.txt
+        \end{lstlisting}
+
+    \subsection{Permissions in MySQL}
+    This section is yet to be populated
+    \iffalse
+    mysql permissions:
+    show users:
+    
+    select user, host from mysql.db where db='CLAS12OCR';
+    
+    show grants:
+    
+    show grants for 'clas12jserver'@'%.jlab.org';
+    
+    GRANT ALL ON . TO 'clas12jserver'@'%.jlab.org';
+    
+    current users that access the db:
+    
+    show processlist;
+    
+    \fi
+
 \section{Testing with SQLite}
     \subsection*{Create SQLite DB}
         \begin{lstlisting}
@@ -8,6 +149,13 @@
         \begin{lstlisting}
             python client/src/SubMit.py --lite=name.sql -u=username client/scard_type1.txt
         \end{lstlisting}
+        
+        
+         sqlite run to download the running script and the gcard. Assuming DB is in the same dir
+    \begin{lstlisting}
+        sqlite3 CLAS12_OCRDB.db "SELECT runscript_text FROM
+        Submissions WHERE submissionID = $submissionID"  > $nodeScript
+    \end{lstlisting}
     
 \section{Statistics and Logging}
     \subsection*{GEMC JSON Web Interface Statistics}
@@ -21,30 +169,6 @@
         \begin{lstlisting}
             python3 utils/gemc_json_logging.py 
         \end{lstlisting}
-   
-   
- %the below section needs some work to compile properly
-\iffalse     
-\section{Useful SQL Commands}
-     sqlite run to download the running script and the gcard. Assuming DB is in the same dir
-    \begin{lstlisting}
-        sqlite3 CLAS12_OCRDB.db "SELECT runscript_text FROM
-        Submissions WHERE submissionID = $submissionID"  > $nodeScript
-    \end{lstlisting}
-    
-    \begin{lstlisting}
-        mysql --host jsubmit.jlab.org --user='username' --password='password' --database='CLAS12OCR' --execute='SELECT runscript_text FROM Submissions WHERE submissionID = 1; ' > example.txt
-    \end{lstlisting}
-    
-    mysql run to download the running script and the gcard.
-    \begin{lstlisting}
-    mysql --host jsubmit.jlab.org --user='$mysql_user' --password='$mysql_pass' --database='CLAS12OCR' --execute='SELECT runscript_text FROM Submissions WHERE submissionID = $submissionID; ' > $nodeScript
-    echo Now running $nodeScript with submissionID: $submissionID" inside directory: "`pwd`
-    \end{lstlisting}
-    
-    \begin{lstlisting}
-    mysql --defaults-extra-file=msqlconf.txt --execute="SELECT runscript_text FROM Submissions WHERE submissionID = $submissionID;"  > $nodeScript
-    echo Now running $nodeScript with submissionID: $submissionID" inside directory: "`pwd`
-    \end{lstlisting}
-    
-\fi
+
+
+

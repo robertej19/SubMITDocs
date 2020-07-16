@@ -20,6 +20,34 @@
 %\lstset{label={lst:code_direct}}
 \lstset{basicstyle=\footnotesize}
 
+
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily\color{blue}},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  %rulecolor=\color{blue},
+  %backgroundcolor=\color{darkgray}
+}
+
+
 \begin{document}
 
 \begin{titlepage}
@@ -44,8 +72,8 @@
 
 \tableofcontents
 
-\chapter{Meetings}
-    \input{Meetings/Meeting-Minutes}
+%\chapter{Meetings}
+%    \input{Meetings/Meeting-Minutes}
     
 %This section needs work to compile correctly    
 %\chapter{Tasks}
@@ -55,15 +83,17 @@
 %\chapter{Structure}
 %    \input{Structure/Structure}    
 
-\chapter{Pull Request Notes}
-    \input{Pull-Requests/prs}
-
 \chapter{Usage}
     \input{Usage/Usage}
     
+\iffalse
+\chapter{Pull Request Notes}
+   \input{Pull-Requests/prs}
+
+
 \chapter{Resources}
     \input{Resources/Resources}
     
-    
+\fi
 
 \end{document}
