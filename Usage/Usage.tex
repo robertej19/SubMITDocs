@@ -110,7 +110,7 @@
         
         If you want to wrap everything all up in one, you can do: 
         \begin{lstlisting}
-        mysql --defaults-extra-file=msql_conn.txt -N -s --execute='select user, client_time, run_status from submissions ORDER BY user_submission_id DESC LIMIT 10;' 
+        mysql --defaults-extra-file=msql_conn_test.txt -N -s --execute='select user, client_time, run_status from submissions ORDER BY user_submission_id DESC LIMIT 10;' 
         \end{lstlisting}
         
         
@@ -169,6 +169,74 @@
         \begin{lstlisting}
             python3 utils/gemc_json_logging.py 
         \end{lstlisting}
+
+
+\section{Using Travis-CI}
+    \href{https://travis-ci.org/}{Travis Location}
+    
+    Important parts of Travis CI:\\
+    There are currently documents important for Travis CI:\\
+    
+    .travis.yml\\
+    requirements.txt\\
+    travis.sql\\
+    travis\_tests.py\\
+    readtests.py\\
+    
+    \subsection{.travis.yml}
+        
+        \begin{lstlisting}
+        
+            language: python
+            python:
+              - "2.7"
+            #  - "3.6"      # current default Python on Travis CI
+            # command to install dependencies
+            services:
+             - mysql
+            before_install:
+             - mysql -u root --password="" < test/travis.sql
+            # - echo "USE mysql;\nUPDATE user SET password=PASSWORD('devpassword') WHERE user='dev';\n" | mysql -u root
+            install:
+            #  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install -r req-py2.txt; fi
+            # - pip install -r req-py2.txt; python_version == "2.7"
+             - pip install -r test/requirements.txt
+            # - pip install mysql-python
+            # command to run tests
+            
+            #script: python2 testapp.py || python3 testapp.py #For now, can't get python3 to work properly
+            script: python2 test/travis_tests.py
+        \end{lstlisting}
+    
+    This file must be named as ".travis.yml" and must be found in the main repository directory. It is the launching point for the CI tests. Here you can specify which python versions you want to test, what services to install, and which programs to run.
+    
+    \subsection{requirements.txt}
+        This file contains which python modules need to be installed in the virtual environment. If something is missing, travis will throw an error, so its not so difficult to get right.
+        
+    \subsection{travis.sql}
+                \begin{lstlisting}
+                    # Create DB
+                    CREATE DATABASE IF NOT EXISTS `CLAS12OCR`;
+                    CREATE DATABASE IF NOT EXISTS `CLAS12TEST`;
+                \end{lstlisting}
+                This initializes the MySQL databases
+                
+    \subsection{travis\_tests.py}
+        This creates all the logically structure and is a framework to execute commands. Its not so important to look at unless something is broken. 
+        
+    \subsection{readtests.py}
+        This is the actual location where what commands to be submitted on Travis-CI are actually specified. The current command structure is:
+        
+                \begin{lstlisting}
+                 verify_submission_success = command_class('Verify scard submission success',
+                                    ['sqlite3','utils/CLAS12OCR.db','SELECT user FROM submissions WHERE user_submission_id=1'],
+                                    'robertej\n')
+                \end{lstlisting}        
+        
+       The structure is a class where the first element is the desired name of the command (user defined), the second is the actual command to execute on the terminal, broken up between spaces, and the third element is what the expected output is from the command. The default is "0" if no output comparison is desired to be made. Travis will fail if a non-zero output is specified and is not observed, even if the command processes successfully. 
+    
+    
+
 
 
 
