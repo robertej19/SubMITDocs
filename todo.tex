@@ -1,0 +1,61 @@
+\section{Documentation!}
+https://medium.com/@richdayandnight/a-simple-tutorial-on-how-to-document-your-python-project-using-sphinx-and-rinohtype-177c22a15b5b
+
+
+On OCR, need to figure out login situation better
+
+better documentation for travis
+
+try to get submodules working
+
+
+
+\section{SCard flag item}
+
+differentiate if we are reading the scard in from the database or if we are reading it in from from an scard? (note - this used to not be important, but now we read things in twice)
+
+https://medium.com/@pranaygore/setters-and-getters-in-python-76b5473b3c83#:~:text=A%20getter%20is%20a%20method%20that%20gets%20the%20value%20of,private%20attributes%20in%20a%20class.&text=Getters%20and%20setters%20can%20allow%20different%20access%20levels.
+
+
+automated code flowchart diagram for submit?
+
+Set up CVMFS with mauri
+ And write up instructions
+
+
+This is important to do because it is easy to read an scard into the database, not push it through, change the codebase, and then read from the database, and have things not work
+
+
+\section{Condor Submit Issue}
+
+As currently configured, when submitting a job to htcondor, we access the runscripts via "condor_submit.sh" which operates as:
+
+mysql --defaults-extra-file=msql_conn.txt <some other code stuff>
+
+In the file msql_conn.txt, we specify which database we want to read from, e.g. CLAS12OCR or CLAS12TEST. d
+
+Since the databs
+
+
+
+\section{Pytz Issue}
+
+The python-htcondor bindings called in gemc_json_logging.py returns a unixtimestamp which is indexed off (I believe) UTC time. 
+
+We need to convert this into a human readable timestamp for the webpage.
+
+Nominally, we can just convert from unixtime to local with a hardcoded offset.
+
+However, I'm not sure that the unixtimestamp always has the same UTC timezone, I wonder if it might change if, in the future, we use farms not associated with OSG.
+Also, it might get messed up with daylight saving time.
+
+I made a more general time converter where you can convert between local and a desired timezone, which is made convient by the python package "pytz"
+
+For some reason, on ifarm, the module "pytz" does not exist for python3 (although it does for python2). 
+
+This brings us to the current state of the code in utils/utils.py, which is as follows:
+
+If using python2, create the original time-converter function using the pytz module
+If using python3, use a temporary hard-coded time-conversion of <unixtimesamp - 4*3600> to account for the 4 hour time difference.
+
+The best solution to this would be if the python3 pytz module could be included on ifarm.
