@@ -1,0 +1,23 @@
+\section{Introduction}
+\section{Job Submission through Webportal (Public)}
+\section{Job Submission through SCOSG16 (Manual)}
+\section{Job Submission through SubMIT.mit.edu (Manual)}
+\subsection{Description}
+The SubMIT system was built to handle job submissions to MIT's Tier 2 (Bates) and Tier 3 (MIT) computing facilities, as well as a few other computing centers around the world. As of 2020, only MIT members have access to submit jobs through this system, but in the end it will need to be opened to all CLAS12 members to submit jobs through the online webportal extension. 
+\subsection{Relevant Information}
+\href{http://submit.mit.edu/}{SubMIT Information}
+\href{http://submit.mit.edu/condormon/index.php}{SubMIT Jobs Monitoring Webpage}
+\subsection{Instructions for Manual Job Submission}
+Steps for manual job submission, using the user robertej as an example:
+
+STEPS FOR SUBMITTING JOBS ON SUBMIT @ MIT:
+
+
+Submitting jobs:
+
+ssh robertej@submit.mit.edu
+cd /work/robertej/jlab_WORKING/clas12simulations
+condor_submit clas12.condor
+
+check jobs: look at monitor or look at:
+condor_q

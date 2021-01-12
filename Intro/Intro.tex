@@ -1,0 +1,25 @@
+\section{Purpose and General Structure}
+
+The purpose of this software framework is to facilitate the submission of Monte Carlo jobs on GEMC to various computing clusters around the world for CLAS12. The framework uses MySQL databases for information storage and sets of python scripts for running the backend, with a CLAS12 webpage for easy job submission. The general flow is:
+\begin{itemize}
+  \item User submits an 'scard' (steering card, basically specifications for the simulation)
+  \item The scard information is read into the MySQL database, along with user metrics
+  \item The scard information is used to generating running scripts 
+  \item The running scripts are packaged and submitted to various computing clusters
+  \item Computing software frameworks, like HTCondor or Slurm, handle the submission on the cluster
+  \item Output is returned to standard CLAS12 output user directories
+\end{itemize}
+
+
+\section{Codebase Structure}
+The codebase is almost exclusively written in Python, and is divided as follows:
+\begin{itemize}
+  \item \textbf{Client} - a client side repository handling the mechanism to get user scard information into a MySQL database
+  \item \textbf{Server} - a server side repository handling the mechanism to get job simulation information from MySQL database to computing clusters
+  \item \textbf{Utils} - a common repository with organizational scripts for interfacing with user, MySQL database, etc
+\end{itemize}
+These are the 3 main divisions of the codebase. There are two other important sections:
+  \begin{ite}
+    \item \textbf{web interface} This contains all the code for managing the website for the online submission portal
+    \item \textbf{Documentation} Documentation for this project. Currently not up to date (\today)+
+  \end{ite}
